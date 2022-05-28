@@ -4,8 +4,11 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from .models import User, Listing, Bids, Comments, Watchlist
 
+from . import facerecognition, faceregister
+from .models import User, Listing, Bids, Comments, Watchlist
+from facerecognition import *
+# from faceregister import *
 
 def index(request):
     return render(request, "facerecognition/index.html",{
@@ -20,20 +23,23 @@ def index(request):
 
 
 def login_view(request):
+    facerecognition.face_reco()
     if request.method == "POST":
         # Attempt to sign user in
-        username = request.POST["username"]
-        password = request.POST["password"]
-        user = authenticate(request, username=username, password=password)
 
+        # username = request.POST["username"]
+        # password = request.POST["password"]
+        # user = authenticate(request, username=username, password=password)
+        # user = facerecognition.face_reco()
         # Check if authentication successful
-        if user is not None:
-            login(request, user)
-            return HttpResponseRedirect(reverse("index"))
-        else:
-            return render(request, "facerecognition/login.html", {
-                "message": "Invalid username and/or password."
-            })
+        # if user is not None:
+        #     login(request, user)
+        #     return HttpResponseRedirect(reverse("index"))
+        # else:
+        #     return render(request, "facerecognition/login.html", {
+        #         "message": "Invalid username and/or password."
+        #     })
+        print("not working in post")
     else:
         return render(request, "facerecognition/login.html")
 
@@ -44,27 +50,29 @@ def logout_view(request):
 
 
 def register(request):
+    faceregister.face_reg()
     if request.method == "POST":
-        username = request.POST["username"]
-        email = request.POST["email"]
-        # Ensure password matches confirmation
-        password = request.POST["password"]
-        confirmation = request.POST["confirmation"]
-        if password != confirmation:
-            return render(request, "facerecognition/register.html", {
-                "message": "Passwords must match."
-            })
-
-        # Attempt to create new user
-        try:
-            user = User.objects.create_user(username, email, password)
-            user.save()
-        except IntegrityError:
-            return render(request, "facerecognition/register.html", {
-                "message": "Username already taken."
-            })
-        login(request, user)
-        return HttpResponseRedirect(reverse("index"))
+        # username = request.POST["username"]
+        # email = request.POST["email"]
+        # # Ensure password matches confirmation
+        # password = request.POST["password"]
+        # confirmation = request.POST["confirmation"]
+        # if password != confirmation:
+        #     return render(request, "facerecognition/register.html", {
+        #         "message": "Passwords must match."
+        #     })
+        #
+        # # Attempt to create new user
+        # try:
+        #     user = User.objects.create_user(username, email, password)
+        #     user.save()
+        # except IntegrityError:
+        #     return render(request, "facerecognition/register.html", {
+        #         "message": "Username already taken."
+        #     })
+        # login(request, user)
+        # return HttpResponseRedirect(reverse("index"))
+        print("lol")
     else:
         return render(request, "facerecognition/register.html")
 
