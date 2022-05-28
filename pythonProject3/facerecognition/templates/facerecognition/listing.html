@@ -1,0 +1,117 @@
+{% extends "facerecognition/layout.html" %}
+
+{% block title %}
+{{listing.title}}
+{% endblock %}
+
+{% block body %}
+{% if user.is_authenticated %}
+    {% if message %}
+    <div class="alert alert-danger" role="alert">{{ message }}</div>
+    {% endif %}
+        <div class = "container jumbotron">
+            {% if listing.user == user %}
+                <h2>You are the owner of this listing.</h2>
+            {% endif %}
+            <h1>{{listing.title}}</h1>
+            <h3>Listed By: {{listing.user}}</h3>
+        </div>
+        <div class = "container">
+            {% if listing.img_url %}
+                <img src="{{listing.img_url}}" style = "width: 600px;">
+            {% endif %}
+
+            <div style = "display:inline-block">
+                <h3>Description:</h3><h5><p style = "font-family: Georgia, 'Times New Roman', Times, serif;">{{listing.description}}</p></h5>
+                {% if listing.category %}
+                    <p><h5>Category: <span style = "color:rgb(248, 78, 78); font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">{{listing.category}}</span></h5></p>
+                {% endif %}
+                <p>Base Price: $ <span style =  "font-weight:bold; font-size:large">{{listing.base_bid}}</span></p>
+                {% if listing.active %}
+                    <h2>Current Bid Price: $ <span style = "color:green; font-weight:bolder">{{highest_bid}}</span></h2>
+                {% endif %}
+                {% if listing.active and not listing.user == user%}
+                    <form action="{% url 'toggle_watchlist' listing.id %}" method = "POST">
+                        {% csrf_token %}
+                        <button type="submit" style = "color:black;" class="btn btn-outline-warning">Watchlist Toggle</button>
+                    </form>
+                    <br>
+                    <form action="{% url 'listing' listing.id %}" method = "POST">
+                        {% csrf_token %}
+                        <input type="number" name = "bid_price" placeholder = {{highest_bid}} min="{{min_bid}}">
+                        <button type="submit" class = "btn btn-success dark">Bid!</button>
+                    </form>
+                    <hr>
+                    <form action="{% url 'listing' listing.id %}" method = "POST">
+                        {% csrf_token %}
+                        <input type="text" name="comment" placeholder = "Comment">
+                        <button class = "btn btn-primary dark">Post Comment</button>
+                    </form>
+                {% endif %}
+                {% if listing.user == user and listing.active %}
+                    <form action="{% url 'close' listing.id %}" method="post">
+                        {% csrf_token %}
+                        <button class="btn btn-primary" type="submit">Close this listing.</button>
+                    </form>
+                {% endif %}
+                {% if not listing.active %}
+                    {% if listing.winner == user %}
+                        <h3>The listing is no more active and has been won by <b>YOU</b>!</h3>
+                    {% elif listing.base_bid == highest_bid%}
+                        <h3>The listing is not active</h3>   
+                    {% elif not listing.winner %}
+                        <h3>The listing is no more active.</h3>
+                    {% else %}
+                        <h3>The listing is no more active and has been won by <b>{{listing.winner}}</b></h3>
+                    {% endif %}
+                {% endif %}
+                </div>
+                {% if comments %}
+                    <hr>
+                    <h3>Comments:</h3>
+                    {% for comment in comments %}
+                        <div class = "container jumbotron">
+                            <h4>User: <span style = "color: black;" >{{comment.user}}</span></h4>
+                            <h5><p style = "border-radius: 2rem; background-color: darkgray; color: black; padding: 1rem">{{comment.contents}}</p></h5>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+        </div>
+{% else %}
+    {% if message %}
+    <div class="alert alert-danger" role="alert">{{ message }}</div>
+    {% endif %}
+        <div class = "container jumbotron">
+            {% if listing.user == user %}
+                <h2>You are the owner of this listing.</h2>
+            {% endif %}
+            <h1>{{listing.title}}</h1>
+            <h3>Listed By: {{listing.user}}</h3>
+        </div>
+        <div class = "container">
+            {% if listing.img_url %}
+                <img src="{{listing.img_url}}" style = "width: 600px;">
+            {% endif %}
+
+            <div style = "display:inline-block">
+                <h3>Description:</h3><h5><p style = "font-family: Georgia, 'Times New Roman', Times, serif;">{{listing.description}}</p></h5>
+                {% if listing.category %}
+                    <p><h5>Category: <span style = "color:rgb(248, 78, 78); font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">{{listing.category}}</span></h5></p>
+                {% endif %}
+                <p>Base Price: $ <span style =  "font-weight:bold; font-size:large">{{listing.base_bid}}</span></p>
+                {% if listing.active %}
+                    <h2>Current Bid Price: $ <span style = "color:green; font-weight:bolder">{{highest_bid}}</span></h2>
+                {% endif %}
+                {% if comments %}
+                    <hr>
+                    <h3>Comments:</h3>
+                    {% for comment in comments %}
+                        <div class = "container jumbotron">
+                            <h4>User: <span style = "color: black;" >{{comment.user}}</span></h4>
+                            <h5><p style = "border-radius: 2rem; background-color: darkgray; color: black; padding: 1rem">{{comment.contents}}</p></h5>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+        </div>
+{% endif %}
+{% endblock %}

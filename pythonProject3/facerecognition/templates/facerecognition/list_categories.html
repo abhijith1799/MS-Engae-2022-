@@ -1,0 +1,17 @@
+{% extends "facerecognition/layout.html" %}
+
+{% block title %}
+Categories
+{% endblock %}
+
+{% block body %}
+    <div>
+        <h2>Here lie all the listings for the chosen category, {{listings.category}}</h2>
+    </div>
+
+    <ul>
+        {% for listing in listings %}
+            <h4><li><a href = "{% url 'listing' listing.id %}">{{listing.title}}</a></li></h4>
+        {% endfor %}
+    </ul>
+{% endblock %}

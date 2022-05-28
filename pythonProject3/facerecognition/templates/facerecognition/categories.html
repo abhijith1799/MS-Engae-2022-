@@ -1,0 +1,16 @@
+{% extends "facerecognition/layout.html" %}
+
+{% block title %}
+Categories
+{% endblock %}
+
+{% block body %}
+    <div>
+        <h2>Categories:</h2>
+    </div>
+    <ul>
+        {% for category in categories %}
+            <h4><li><a href="{% url 'list_categories' category %}">{{ category }}</a></li></h4><!--{% url 'list_categories' category %}-->
+        {% endfor %}
+    </ul>
+{% endblock %}

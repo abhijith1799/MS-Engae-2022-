@@ -1,0 +1,38 @@
+{% extends "facerecognition/layout.html" %}
+
+{% block title %}
+Watchlist
+{% endblock %}
+
+{% block body %}
+    <h1>Watchlist</h1>
+    {% if watchlist %}
+        {% for wl in watchlist %}
+            <div class = "container jumbotron">
+                <h1>{{wl.listing.title}}</h1>
+                <h3>Listed By: {{wl.listing.user}}</h3>
+            </div>
+            <div class = "container">
+            {% if wl.listing.img_url %}
+                <img src="{{wl.listing.img_url}}" alt="" style = "width: 600px">
+            {% endif %}
+                <div style = "display: inline-block;">
+                    <h3>Description: </h3><p><h5>{{wl.listing.description}}</h5></p>
+                    <br>
+                    {% if wl.listing.category %}
+                        <h3>Category: </h3><p><h5 style = "color: rgb(253, 4, 4)">{{wl.listing.category}}</h5></p>
+                    {% endif %}
+                    <form action="{% url 'toggle_watchlist' wl.listing.id %}" method = "POST">
+                        {% csrf_token %}
+                        <button type="submit" class = "btn btn-danger dark">Remove from Watchlist</button>
+                    </form>
+                </div>
+            </div>
+            
+        {% endfor %}
+        {% else %}
+            <center>
+                <h2>No Entries</h2>
+            </center>
+    {% endif %}
+{% endblock %}
