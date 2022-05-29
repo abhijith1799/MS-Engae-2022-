@@ -32,6 +32,7 @@ def face_reco():
         return encodeList
 
     # 1
+    nameList = []
 
     encodeListKnown = findEncodings(images)
     print('Encodings Complete')
@@ -39,7 +40,7 @@ def face_reco():
     def markAttendance(name):
         with open('/home/oem/PycharmProjects/pythonProject3/pythonProject3/facerecognition/AttendRegistry.csv', 'r+') as f:
             myDataList = f.readlines()
-            nameList = []
+            
             for line in myDataList:
                 entry = line.split(',')
                 nameList.append(entry[0])
@@ -49,6 +50,7 @@ def face_reco():
                 current_date_time = datetime.now()
                 # dt_string = now.strftime("%H:%M:%S")
                 f.writelines(f'\n{name},{current_date_time}')
+        return nameList
 
     cap = cv2.VideoCapture(0)
     authorization = False
@@ -75,7 +77,8 @@ def face_reco():
                 cv2.rectangle(img, (x1, y2 - 35), (x2, y2), (0, 255, 0), cv2.FILLED)
                 cv2.putText(img, name, (x1 + 6, y2 - 6), cv2.FONT_HERSHEY_DUPLEX, 1.0, (255, 255, 255), 1)
                 # 2
-                markAttendance(name)
+                list = []
+                list = markAttendance(name)
                 authorization = True
 
             else:
@@ -87,5 +90,5 @@ def face_reco():
                 authorization = False
         cv2.imshow('webcam', img)
         cv2.waitKey(1)
-    return authorization
+        return nameList
 
