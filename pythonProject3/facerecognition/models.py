@@ -7,7 +7,7 @@ class User(AbstractUser):
     password =  models.CharField(max_length = 128)
     last_login = models.DateTimeField()
     is_superuser = models.BooleanField(default = False)
-    username = models.CharField(max_length = 150)
+    username_field = models.CharField(max_length = 150)
     email = models.CharField(max_length = 255)
 
 class Listing(models.Model):
