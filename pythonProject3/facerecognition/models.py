@@ -9,6 +9,8 @@ class User(AbstractUser):
     is_superuser = models.BooleanField(default = False)
     username_field = models.CharField(max_length = 150)
     email = models.CharField(max_length = 255)
+    def __str__(self):
+        return self.id
 
 class Listing(models.Model):
     user = models.ForeignKey(User, on_delete = models.CASCADE, related_name = "owner")
