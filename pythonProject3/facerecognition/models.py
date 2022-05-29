@@ -2,9 +2,13 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.core.validators import MinValueValidator
 
-
 class User(AbstractUser):
-    pass
+    id = models.IntegerField()
+    password =  models.CharField(max_length = 128)
+    last_login = models.DateTimeField()
+    is_superuser = models.BooleanField(default = False)
+    username = models.CharField(max_length = 150)
+    email = models.CharField(max_length = 255)
 
 class Listing(models.Model):
     user = models.ForeignKey(User, on_delete = models.CASCADE, related_name = "owner")
