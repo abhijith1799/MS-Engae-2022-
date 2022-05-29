@@ -3,7 +3,7 @@ from django.db import models
 from django.core.validators import MinValueValidator
 
 class User(AbstractUser):
-    id = models.IntegerField()
+    id = models.IntegerField(primary_key=True)
     password =  models.CharField(max_length = 128)
     last_login = models.DateTimeField()
     is_superuser = models.BooleanField(default = False)
