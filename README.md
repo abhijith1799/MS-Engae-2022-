@@ -1,8 +1,8 @@
-# pythonProject3
+# Face-Recognition based Authentication-cum-Attendence System
 
 Libraries Used-
 
-CMake
+CMake 
 
 dlib
 
