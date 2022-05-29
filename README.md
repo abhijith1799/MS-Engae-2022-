@@ -45,7 +45,6 @@ There are two ways to import the faces for training-
 1) By manual folder import 
 
 2) here we provide another functionality to register faces,when we use this camera will pop up and we can capture image, this images tranfered to training.
-all ticket we can recognize them by identifing their faces , if connect all candidates faces.
 
 
 
