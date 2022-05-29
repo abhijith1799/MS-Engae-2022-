@@ -76,8 +76,10 @@ def register(request):
 
 def registered_students(request):
     if request.method == 'POST':
-        list = []
-        list = facerecognition.face_reco()
+        return HttpResponseRedirect(reverse("registeredStudents"))
+    #     list = []
+    #     list = facerecognition.face_reco()
+    # return render(request,"facerecognition/registeredStudents.html")
 
 
 def categories(request):
